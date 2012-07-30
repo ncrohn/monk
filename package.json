@@ -1,0 +1,21 @@
+{
+  "author": "Nick Crohn <ncrohn@me.com> (http://nickcrohn.com)",
+  "name": "monk",
+  "description": "Beer fermenter monitoring server",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ncrohn/monk.git"
+  },
+  "engines": {
+    "node": "~0.6.14"
+  },
+  "dependencies": {
+    "express": "~2.x",
+    "winston": "~0.6.2",
+    "mca": "0.0.1",
+    "socket.io": "~0.9.8"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}

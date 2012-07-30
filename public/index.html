@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="/js/socket.io.min.js"></script>
+  </head>
+  <body>
+    
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+    <script>
+      var globalSeries = null;
+
+      var socket = io.connect('http://localhost:7000');
+      socket.on('data', function (data) {
+
+        if(globalSeries !== null) {
+          var x = (new Date()).getTime(),
+              y = Number(data.tempC);
+          console.log(y);
+          globalSeries.addPoint([x, y], true, true);
+        }
+
+      });
+
+      $(function () {
+        $(document).ready(function() {
+          Highcharts.setOptions({
+            global: {
+              useUTC: false
+            }
+          });
+    
+          var chart;
+          chart = new Highcharts.Chart({
+            chart: {
+              renderTo: 'container',
+              type: 'spline',
+              marginRight: 10,
+              events: {
+                load: function() {
+                  globalSeries = this.series[0];
+                }
+              }
+            },
+            title: {
+              text: 'Live random data'
+            },
+            xAxis: {
+              type: 'datetime',
+              tickPixelInterval: 150
+            },
+            yAxis: {
+              title: {
+                text: 'Temp'
+              },
+              plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+              }]
+            },
+            tooltip: {
+              formatter: function() {
+                return '<b>'+ this.series.name +'</b><br/>'+
+                  Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                  Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+              enabled: false
+            },
+            exporting: {
+              enabled: false
+            },
+            series: [{
+              name: 'Temp C',
+              data: (function() {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
+    
+                    for (i = -100; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: Math.round(Math.random()*20)
+                        });
+                    }
+                    return data;
+                })()
+          }]
+      });
+    });
+ });
+    </script>
+  </body>
+</html>
