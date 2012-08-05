@@ -18,8 +18,7 @@
 
         if(globalSeries !== null) {
           var x = (new Date()).getTime(),
-              y = Number(data.tempC);
-          console.log(y);
+              y = Number(data.tempF);
           globalSeries.addPoint([x, y], true, true);
         }
 
@@ -83,10 +82,10 @@
                         time = (new Date()).getTime(),
                         i;
     
-                    for (i = -100; i <= 0; i++) {
+                    for (i = -49; i <= 0; i++) {
                         data.push({
-                            x: time + i * 1000,
-                            y: Math.round(Math.random()*20)
+                            x: time + i * 60000,
+                            y: Math.round(Math.random()*2)+76
                         });
                     }
                     return data;
